@@ -12,26 +12,40 @@ class Game {
     };
   }
 
-  createGame(players) {
-    players.forEach((player) => {
-      this.state.players[player] = this.randomFreePosition();
+  createGame(playerIds) {
+    playerIds.forEach((playerId) => {
+      const position = this.randomFreePosition();
+      this.addPlayer({ playerId, ...position });
     });
+  }
+
+  startGame() {
+    this.renderer.renderScreen(this.state.players, this.state.foods);
   }
 
   playerCommand(command) {
     const { playerId, key } = command;
     const player = this.state.players[playerId];
-    const newPlayer = this.actions.executeAction(player, key);
 
-    if (!isSamePlayer(player, newPlayer)) {
-      this.state.players[playerId] = newPlayer;
-      this.renderer.clearScreen();
-      this.renderer.renderScreen(this.state.players, this.state.foods);
+    if (player) {
+      const newPlayer = this.actions.executeAction(player, key);
+
+      if (!isSamePlayer(player, newPlayer)) {
+        this.state.players[playerId] = newPlayer;
+        this.renderer.clearScreen();
+        this.renderer.renderScreen(this.state.players, this.state.foods);
+      }
     }
   }
 
-  startGame() {
-    this.renderer.renderScreen(this.state.players, this.state.foods);
+  addPlayer(command) {
+    const { playerId, x, y } = command;
+    this.state.players[playerId] = { x, y };
+  }
+
+  removePlayer(command) {
+    const { playerId } = command;
+    delete this.state.players[playerId];
   }
 
   randomFreePosition() {
