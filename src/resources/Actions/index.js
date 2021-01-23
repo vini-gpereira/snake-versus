@@ -24,10 +24,6 @@ class Actions {
     const action = this.actions[key];
     return action ? action(player) : player;
   }
-
-  addOrModifyAction(key, action) {
-    this.actions[key] = action;
-  }
 }
 
 export default Actions;
