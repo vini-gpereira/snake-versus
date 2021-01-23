@@ -1,9 +1,10 @@
 const screen = document.getElementById('screen')
 const ctx = screen.getContext('2d')
-const maxPixel = 49
-const minPixel = 0
-const pixel = screen.scrollHeight / (maxPixel - minPixel + 1)
-const size = pixel
+const screenSize = 50
+const pixel = screen.scrollHeight / screenSize
+const entitySize = pixel
+
+const currentPlayerId = 'player1'
 
 const game = {
   players: {
@@ -12,34 +13,69 @@ const game = {
   foods: {}
 }
 
-generateRandomFoods(10)
-renderGame()
+document.addEventListener('keydown', handleKeyDown)
 
-function renderGame() {
-  const { players, foods } = game
-  
-  ctx.fillStyle = 'black'
+function startGame() {
+  generateRandomFoods(10)
+  renderScreen()
+}
 
-  for (playerId in players) {
-    const player = players[playerId]
-    console.log(`Player ${playerId} joined the game in (${player.x}, ${player.y})`)
-    ctx.fillRect(player.x * pixel, player.y * pixel, size, size)
+function handleKeyDown(event) {
+  const actions = {
+    'ArrowUp': moveUp,
+    'ArrowDown': moveDown,
+    'ArrowRight': moveRight,
+    'ArrowLeft': moveLeft
   }
 
-  ctx.fillStyle = 'blue'
-  
-  for (foodId in foods) {
-    const food = foods[foodId]
-    console.log(`Food ${foodId} has been spawned in (${food.x}, ${food.y})`)
-    ctx.fillRect(food.x * pixel, food.y * pixel, size, size)
+  const action = actions[event.key]
+
+  if (action) {
+    action()
+    renderScreen()
   }
 }
 
+function moveUp() {
+  const player = game.players[currentPlayerId]
+  const newY = (player.y - 1) % screenSize
+  
+  player.y = newY
+  
+  game.players[currentPlayerId] = player
+}
+
+function moveDown() {
+  const player = game.players[currentPlayerId]
+  const newY = (player.y + 1) % screenSize
+  
+  player.y = newY
+  
+  game.players[currentPlayerId] = player
+}
+
+function moveRight() {
+  const player = game.players[currentPlayerId]
+  const newX = (player.x + 1) % screenSize
+  
+  player.x = newX
+  
+  game.players[currentPlayerId] = player
+}
+
+function moveLeft() {
+  const player = game.players[currentPlayerId]
+  const newX = (player.x - 1) % screenSize
+  
+  player.x = newX
+  
+  game.players[currentPlayerId] = player
+}
 
 function generateRandomFoods(n) {
   for (let i = 1; i <= n; i++) {
-    x = randint(minPixel, maxPixel)
-    y = randint(minPixel, maxPixel)
+    x = randint(0, screenSize - 1)
+    y = randint(0, screenSize - 1)
     
     if (isPositionEmpty(x, y)) {
       const foodId = `food${i}`
@@ -57,14 +93,6 @@ function randint(min, max) {
 function isPositionEmpty(x, y) {
   const { players, foods } = game
 
-  for (playerId in players) {
-    const player = players[playerId]
-
-    if (player.x === x && player.y === y) {
-      return false
-    }
-  }
-
   for (foodId in foods) {
     const food = foods[foodId]
 
@@ -73,5 +101,35 @@ function isPositionEmpty(x, y) {
     }
   }
 
+  for (playerId in players) {
+    const player = players[playerId]
+
+    if (player.x === x && player.y === y) {
+      return false
+    }
+  }
+
   return true
 }
+
+function renderScreen() {
+  const { players, foods } = game
+
+  ctx.clearRect(0, 0, screen.width, screen.height)
+  
+  ctx.fillStyle = 'black'
+
+  for (const playerId in players) {
+    const player = players[playerId]
+    ctx.fillRect(player.x * pixel, player.y * pixel, entitySize, entitySize)
+  }
+
+  ctx.fillStyle = 'blue'
+  
+  for (const foodId in foods) {
+    const food = foods[foodId]
+    ctx.fillRect(food.x * pixel, food.y * pixel, entitySize, entitySize)
+  }
+}
+
+startGame()
