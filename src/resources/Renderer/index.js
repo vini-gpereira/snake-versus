@@ -7,8 +7,6 @@ class Renderer {
   }
 
   renderScreen(players, foods) {
-    this.ctx.clearRect(0, 0, this.screen.width, this.screen.height);
-
     this.ctx.fillStyle = 'black';
 
     Object.values(players).forEach((player) => {
@@ -30,6 +28,10 @@ class Renderer {
         this.entitySize
       );
     });
+  }
+
+  clearScreen() {
+    this.ctx.clearRect(0, 0, this.screen.width, this.screen.height);
   }
 }
 
