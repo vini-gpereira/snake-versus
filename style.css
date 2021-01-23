@@ -1,0 +1,36 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  display: inline-block;
+  width: 100vw;
+  height: 100vh;
+  font-family: 'Press Start 2P', cursive;
+}
+
+footer {
+  background-color: black;
+}
+
+#container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+}
+
+#container h1 {
+  margin-bottom: 1rem;
+}
+
+#screen {
+  border: solid 2px #ccc;
+  width: 500px;
+  height: 500px;
+}
