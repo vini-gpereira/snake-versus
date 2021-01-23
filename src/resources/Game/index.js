@@ -48,6 +48,16 @@ class Game {
     delete this.state.players[playerId];
   }
 
+  addFood(command) {
+    const { foodId, x, y } = command;
+    this.state.foods[foodId] = { x, y };
+  }
+
+  removeFood(command) {
+    const { foodId } = command;
+    delete this.state.players[foodId];
+  }
+
   randomFreePosition() {
     const min = 0;
     const max = this.boardSize - 1;
