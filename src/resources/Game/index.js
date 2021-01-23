@@ -12,7 +12,7 @@ class Game {
     };
   }
 
-  buildInitialState(players) {
+  createGame(players) {
     players.forEach((player) => {
       this.state.players[player] = this.randomFreePosition();
     });
