@@ -33,6 +33,7 @@ class Game {
       if (!isSamePlayer(player, newPlayer)) {
         this.state.players[playerId] = newPlayer;
         this.renderer.clearScreen();
+        this.checkForFruitCollision(newPlayer);
         this.renderer.renderScreen(this.state.players, this.state.foods);
       }
     }
@@ -56,6 +57,20 @@ class Game {
   removeFood(command) {
     const { foodId } = command;
     delete this.state.players[foodId];
+  }
+
+  checkForFruitCollision(player) {
+    const { x, y } = player;
+    const { foods } = this.state;
+
+    const collidedFoodId = Object.keys(foods).find((foodId) => {
+      const food = foods[foodId];
+      return food.x === x && food.y === y;
+    });
+
+    if (collidedFoodId) {
+      this.removeFood(collidedFoodId);
+    }
   }
 
   randomFreePosition() {
