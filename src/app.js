@@ -32,5 +32,5 @@ watcher.subscribe(game.playerCommand);
 
 const players = ['player1', 'player2', 'player3', 'player4'];
 
-game.buildInitialGame(players);
+game.buildInitialState(players);
 game.startGame();
