@@ -2,10 +2,12 @@ import randint from '../../utils/generators';
 import { isPositionFree, isSamePlayer } from '../../utils/validators';
 
 class Game {
-  constructor({ gameSettings, actions, renderer }) {
+  // eslint-disable-next-line object-curly-newline
+  constructor({ gameSettings, actions, renderer, scores }) {
     this.boardSize = gameSettings.boardSize;
     this.actions = actions;
     this.renderer = renderer;
+    this.scores = scores;
     this.state = {
       players: {},
       foods: {},
@@ -16,6 +18,7 @@ class Game {
     playerIds.forEach((playerId) => {
       const position = this.randomFreePosition();
       this.addPlayer({ playerId, ...position });
+      this.scores.addPlayerScore(playerId);
     });
   }
 
@@ -33,7 +36,7 @@ class Game {
       if (!isSamePlayer(player, newPlayer)) {
         this.state.players[playerId] = newPlayer;
         this.renderer.clearScreen();
-        this.checkForFruitCollision(newPlayer);
+        this.checkForFruitCollision(playerId);
         this.renderer.renderScreen(this.state.players, this.state.foods);
       }
     }
@@ -46,6 +49,7 @@ class Game {
 
   removePlayer(command) {
     const { playerId } = command;
+    this.scores.removePlayerScore(playerId);
     delete this.state.players[playerId];
   }
 
@@ -59,8 +63,8 @@ class Game {
     delete this.state.players[foodId];
   }
 
-  checkForFruitCollision(player) {
-    const { x, y } = player;
+  checkForFruitCollision(playerId) {
+    const { x, y } = this.state.players[playerId];
     const { foods } = this.state;
 
     const collidedFoodId = Object.keys(foods).find((foodId) => {
@@ -70,6 +74,7 @@ class Game {
 
     if (collidedFoodId) {
       this.removeFood(collidedFoodId);
+      this.scores.incrementScore(playerId);
     }
   }
 
