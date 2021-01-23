@@ -25,10 +25,14 @@ class Game {
 
     if (!isSamePlayer(player, newPlayer)) {
       this.state.players[playerId] = newPlayer;
+      this.renderer.clearScreen();
+      this.renderer.renderScreen(this.state.players, this.state.foods);
     }
   }
 
-  startGame() {}
+  startGame() {
+    this.renderer.renderScreen(this.state.players, this.state.foods);
+  }
 
   randomFreePosition() {
     const min = 0;
