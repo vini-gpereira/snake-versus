@@ -1,8 +1,8 @@
-import Watcher from './resources/Watcher';
-import Listener from './resources/Listener';
-import Actions from './resources/Actions';
-import Renderer from './resources/Renderer';
-import Game from './resources/Game';
+import Watcher from '../src/resources/Watcher';
+import Listener from '../src/resources/Listener';
+import Actions from '../src/resources/Actions';
+import Renderer from '../src/resources/Renderer';
+import Game from '../src/resources/Game';
 
 const screen = document.getElementById('screen');
 const context = screen.getContext('2d');

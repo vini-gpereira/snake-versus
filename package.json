@@ -2,10 +2,14 @@
   "name": "snake-versus",
   "version": "1.0.0",
   "description": "A game i'm making for learning purposes, to understand some concepts like design patterns and new tools, such as WebSocket. Hope it will be useful for you too!",
-  "main": "index.js",
+  "main": "./src/server.js",
   "scripts": {
     "lint": "eslint --ext .js src",
-    "lint-fix": "eslint --ext .js src --fix"
+    "lint-fix": "eslint --ext .js src --fix",
+    "build:public": "babel public --ignore \"src/**/*.test.js\" --out-dir build/public",
+    "build:src": "babel src --ignore \"src/**/*.test.js\" --out-dir build/src",
+    "build": "npm run build:public && npm run build:src",
+    "serve": "nodemon"
   },
   "repository": {
     "type": "git",
@@ -19,11 +23,18 @@
   },
   "homepage": "https://github.com/vini-gpereira/snake-versus#readme",
   "devDependencies": {
+    "@babel/cli": "^7.12.10",
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
     "eslint": "^7.18.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^7.2.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^3.3.1",
+    "nodemon": "^2.0.7",
     "prettier": "^2.2.1"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
   }
 }
