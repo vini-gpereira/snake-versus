@@ -1,14 +1,13 @@
 import randint from '../../utils/generators';
-import { isPositionFree, isSamePlayer } from '../../utils/validators';
+import { isPositionFree } from '../../utils/validators';
 
 class Game {
-  // eslint-disable-next-line object-curly-newline
-  constructor({ gameSettings, actions, renderer, scores }) {
+  constructor({ gameSettings, actions, renderer }) {
     this.boardSize = gameSettings.boardSize;
     this.actions = actions;
     this.renderer = renderer;
-    this.scores = scores;
     this.state = {
+      scores: {},
       players: {},
       foods: {},
     };
@@ -17,8 +16,8 @@ class Game {
   createGame(playerIds) {
     playerIds.forEach((playerId) => {
       const position = this.randomFreePosition();
-      this.addPlayer({ playerId, ...position });
-      this.scores.addPlayerScore(playerId);
+      this.addOrUpdatePlayer({ playerId, ...position });
+      this.addScore(playerId);
     });
   }
 
@@ -31,18 +30,34 @@ class Game {
     const player = this.state.players[playerId];
 
     if (player) {
-      const newPlayer = this.actions.executeAction(player, key);
-
-      if (!isSamePlayer(player, newPlayer)) {
-        this.state.players[playerId] = newPlayer;
-        this.renderer.clearScreen();
-        this.checkForFruitCollision(playerId);
-        this.renderer.renderScreen(this.state.players, this.state.foods);
-      }
+      const { x, y } = this.actions.executeAction(player, key);
+      this.addOrUpdatePlayer({ playerId, x, y });
+      this.checkForFoodCollision(playerId);
     }
   }
 
-  addPlayer(command) {
+  addScore(command) {
+    const { playerId } = command;
+
+    if (!playerId || typeof this.state.scores[playerId] === 'number') {
+      this.state.scores[playerId] = 0;
+    }
+  }
+
+  removeScore(command) {
+    const { playerId } = command;
+    delete this.state.scores[playerId];
+  }
+
+  incrementScore(command) {
+    const { playerId } = command;
+
+    if (playerId && typeof this.state.scores[playerId] === 'number') {
+      this.state.scores[playerId] += 1;
+    }
+  }
+
+  addOrUpdatePlayer(command) {
     const { playerId, x, y } = command;
     this.state.players[playerId] = { x, y };
   }
@@ -63,7 +78,7 @@ class Game {
     delete this.state.players[foodId];
   }
 
-  checkForFruitCollision(playerId) {
+  checkForFoodCollision(playerId) {
     const { x, y } = this.state.players[playerId];
     const { foods } = this.state;
 
@@ -73,8 +88,8 @@ class Game {
     });
 
     if (collidedFoodId) {
-      this.removeFood(collidedFoodId);
-      this.scores.incrementScore(playerId);
+      this.removeFood({ collidedFoodId });
+      this.incrementScore({ playerId });
     }
   }
 
