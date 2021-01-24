@@ -1,12 +1,15 @@
 class Renderer {
-  constructor({ gameSettings }) {
+  constructor({ gameSettings, requestAnimationFrame }) {
     this.screen = gameSettings.screen;
     this.ctx = gameSettings.context;
     this.pixel = gameSettings.pixel;
     this.entitySize = gameSettings.entitySize;
+    this.requestAnimationFrame = requestAnimationFrame;
   }
 
   renderScreen(players, foods) {
+    this.clearScreen();
+
     this.ctx.fillStyle = 'black';
 
     Object.values(players).forEach((player) => {
@@ -27,6 +30,10 @@ class Renderer {
         this.entitySize,
         this.entitySize
       );
+    });
+
+    this.requestAnimationFrame(() => {
+      this.renderScreen(players, foods);
     });
   }
 
