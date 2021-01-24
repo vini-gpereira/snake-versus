@@ -1,6 +1,6 @@
 {
-  "watch": ["src", "public"],
+  "watch": ["src"],
   "ext": "js",
   "ignore": ["src/**/*.test.js"],
-  "exec": "npm run build && node ./build/src/index.js"
+  "exec": "npm run build && node ./build/server.js"
 }

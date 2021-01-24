@@ -5,7 +5,7 @@ const app = express();
 const server = http.createServer();
 const port = 3000;
 
-app.use(express.static('../public'));
+app.use(express.static('.'));
 
 server.listen(port, () => {
   console.log('> Server running on port: 3000');
