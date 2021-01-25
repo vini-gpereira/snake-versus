@@ -12,7 +12,6 @@ class Game {
       foods: {},
     };
 
-    this.createGame = this.createGame.bind(this);
     this.startGame = this.startGame.bind(this);
     this.playerCommand = this.playerCommand.bind(this);
     this.addOrUpdatePlayer = this.addOrUpdatePlayer.bind(this);
@@ -24,14 +23,6 @@ class Game {
     this.incrementScore = this.incrementScore.bind(this);
     this.checkForFoodCollision = this.checkForFoodCollision.bind(this);
     this.randomFreePosition = this.randomFreePosition.bind(this);
-  }
-
-  createGame(playerIds) {
-    playerIds.forEach((playerId) => {
-      const position = this.randomFreePosition();
-      this.addOrUpdatePlayer({ playerId, ...position });
-      this.addScore(playerId);
-    });
   }
 
   startGame() {
