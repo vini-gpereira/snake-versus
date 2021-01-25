@@ -4,19 +4,19 @@ class Actions {
   constructor({ gameSettings }) {
     this.actions = {
       ArrowUp(player) {
-        const newY = mod(player.y - 1, gameSettings.boardSize);
+        const newY = mod(player.y - 1, gameSettings.board.height);
         return { ...player, y: newY };
       },
       ArrowDown(player) {
-        const newY = mod(player.y + 1, gameSettings.boardSize);
+        const newY = mod(player.y + 1, gameSettings.board.height);
         return { ...player, y: newY };
       },
       ArrowRight(player) {
-        const newX = mod(player.x + 1, gameSettings.boardSize);
+        const newX = mod(player.x + 1, gameSettings.board.width);
         return { ...player, x: newX };
       },
       ArrowLeft(player) {
-        const newX = mod(player.x - 1, gameSettings.boardSize);
+        const newX = mod(player.x - 1, gameSettings.board.width);
         return { ...player, x: newX };
       },
     };

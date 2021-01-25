@@ -3,7 +3,7 @@ import { isPositionFree } from '../utils/validators.js';
 
 class Game {
   constructor({ gameSettings, actions, renderer }) {
-    this.boardSize = gameSettings.boardSize;
+    this.board = gameSettings.board;
     this.actions = actions;
     this.renderer = renderer;
     this.state = {
@@ -108,15 +108,16 @@ class Game {
 
   randomFreePosition() {
     const min = 0;
-    const max = this.boardSize - 1;
+    const maxH = this.board.height - 1;
+    const maxW = this.board.width - 1;
     const { players, foods } = this.state;
 
-    let x = randint(min, max);
-    let y = randint(min, max);
+    let x = randint(min, maxW);
+    let y = randint(min, maxH);
 
     while (!isPositionFree(x, y, players, foods)) {
-      x = randint(min, max);
-      y = randint(min, max);
+      x = randint(min, maxW);
+      y = randint(min, maxH);
     }
 
     return { x, y };

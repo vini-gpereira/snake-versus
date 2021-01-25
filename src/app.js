@@ -6,16 +6,19 @@ import Game from './resources/Game.js';
 
 const screen = document.getElementById('screen');
 const context = screen.getContext('2d');
-const boardSize = 50;
-const pixel = screen.scrollHeight / boardSize;
+const pixel = 10;
 const entitySize = pixel;
+const board = {
+  height: screen.scrollHeight / pixel,
+  width: screen.scrollWidth / pixel,
+};
 const currentPlayerId = 'player1';
 
 const gameSettings = {
   screen,
   context,
-  boardSize,
   pixel,
+  board,
   entitySize,
   currentPlayerId,
 };
