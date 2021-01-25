@@ -1,3 +1,5 @@
+import { boundMethod } from "autobind-decorator";
+
 class Actions {
   constructor({ gameSettings }) {
     this.actions = {
@@ -20,6 +22,7 @@ class Actions {
     };
   }
 
+  @boundMethod
   executeAction(player, key) {
     const action = this.actions[key];
     return action ? action(player) : player;

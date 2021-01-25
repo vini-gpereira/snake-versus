@@ -1,3 +1,5 @@
+import { boundMethod } from "autobind-decorator";
+
 class Renderer {
   constructor({ gameSettings }) {
     this.screen = gameSettings.screen;
@@ -6,6 +8,7 @@ class Renderer {
     this.entitySize = gameSettings.entitySize;
   }
 
+  @boundMethod
   renderScreen(players, foods) {
     this.clearScreen();
 
@@ -36,6 +39,7 @@ class Renderer {
     });
   }
 
+  @boundMethod
   clearScreen() {
     this.ctx.clearRect(0, 0, this.screen.width, this.screen.height);
   }
