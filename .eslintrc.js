@@ -22,5 +22,11 @@ module.exports = {
         objects: 'always-multiline',
       },
     ],
+    'import/extensions': [
+      'error',
+      {
+        js: 'always',,
+      },
+    ],,
   },
 };
