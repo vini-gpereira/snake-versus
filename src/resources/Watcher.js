@@ -4,7 +4,7 @@ class Watcher {
 
     this.subscribe = this.subscribe.bind(this)
     this.unsubscribe = this.unsubscribe.bind(this)
-    this.notify = this.subscribe.bind(this)
+    this.notify = this.notify.bind(this)
   }
 
   subscribe(f) {
