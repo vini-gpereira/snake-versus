@@ -36,5 +36,9 @@ watcher.subscribe(game.playerCommand);
 
 const players = ['player1', 'player2', 'player3', 'player4'];
 
+game.addFood({ foodId: 'food1', x: 10, y: 20 });
+game.addFood({ foodId: 'food2', x: 2, y: 30 });
+game.addFood({ foodId: 'food3', x: 40, y: 23 });
+game.addFood({ foodId: 'food4', x: 17, y: 28 });
 game.createGame(players);
 game.startGame();

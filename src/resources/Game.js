@@ -88,7 +88,7 @@ class Game {
 
   removeFood(command) {
     const { foodId } = command;
-    delete this.state.players[foodId];
+    delete this.state.foods[foodId];
   }
 
   checkForFoodCollision(playerId) {
@@ -101,7 +101,7 @@ class Game {
     });
 
     if (collidedFoodId) {
-      this.removeFood({ collidedFoodId });
+      this.removeFood({ foodId: collidedFoodId });
       this.incrementScore({ playerId });
     }
   }
