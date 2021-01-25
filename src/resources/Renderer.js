@@ -30,8 +30,9 @@ class Renderer {
       );
     });
 
+    this.ctx.fillStyle = 'red';
+
     Object.values(foods).forEach((food) => {
-      this.ctx.fillStyle = 'blue';
       this.ctx.fillRect(
         food.x * this.pixel,
         food.y * this.pixel,
