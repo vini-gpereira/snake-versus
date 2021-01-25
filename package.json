@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "A game i'm making for learning purposes, to understand some concepts like design patterns and new tools, such as WebSocket. Hope it will be useful for you too!",
   "main": "./src/index.js",
+  "type": "module",
   "scripts": {
     "lint": "eslint --ext .js src",
     "lint-fix": "eslint --ext .js src --fix",
-    "build": "babel src --ignore \"src/**/*.test.js\" --out-dir build",
-    "serve": "nodemon"
+    "serve": "nodemon ./src/index.js --exec babel-node"
   },
   "repository": {
     "type": "git",
@@ -23,6 +23,7 @@
   "devDependencies": {
     "@babel/cli": "^7.12.10",
     "@babel/core": "^7.12.10",
+    "@babel/node": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
     "eslint": "^7.18.0",
     "eslint-config-airbnb-base": "^14.2.1",
