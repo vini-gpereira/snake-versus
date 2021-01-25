@@ -19,7 +19,7 @@ class Actions {
       },
     };
 
-    this.executeAction = this.executeAction.bind(this)
+    this.executeAction = this.executeAction.bind(this);
   }
 
   executeAction(player, key) {

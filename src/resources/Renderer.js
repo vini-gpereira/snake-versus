@@ -4,17 +4,24 @@ class Renderer {
     this.ctx = gameSettings.context;
     this.pixel = gameSettings.pixel;
     this.entitySize = gameSettings.entitySize;
+    this.currentPlayerId = gameSettings.currentPlayerId;
 
-    this.renderScreen = this.renderScreen.bind(this)
-    this.clearScreen = this.clearScreen.bind(this)
+    this.renderScreen = this.renderScreen.bind(this);
+    this.clearScreen = this.clearScreen.bind(this);
   }
 
   renderScreen(players, foods) {
     this.clearScreen();
 
-    this.ctx.fillStyle = 'black';
+    Object.keys(players).forEach((id) => {
+      const player = players[id];
 
-    Object.values(players).forEach((player) => {
+      if (id === this.currentPlayerId) {
+        this.ctx.fillStyle = 'blue';
+      } else {
+        this.ctx.fillStyle = 'black';
+      }
+
       this.ctx.fillRect(
         player.x * this.pixel,
         player.y * this.pixel,
@@ -23,9 +30,8 @@ class Renderer {
       );
     });
 
-    this.ctx.fillStyle = 'blue';
-
     Object.values(foods).forEach((food) => {
+      this.ctx.fillStyle = 'blue';
       this.ctx.fillRect(
         food.x * this.pixel,
         food.y * this.pixel,

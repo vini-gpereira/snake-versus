@@ -2,9 +2,9 @@ class Watcher {
   constructor() {
     this.observers = [];
 
-    this.subscribe = this.subscribe.bind(this)
-    this.unsubscribe = this.unsubscribe.bind(this)
-    this.notify = this.notify.bind(this)
+    this.subscribe = this.subscribe.bind(this);
+    this.unsubscribe = this.unsubscribe.bind(this);
+    this.notify = this.notify.bind(this);
   }
 
   subscribe(f) {

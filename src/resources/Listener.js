@@ -3,7 +3,7 @@ class Listener {
     this.playerId = gameSettings.currentPlayerId;
     this.watcher = watcher;
 
-    this.handleInput = this.handleInput.bind(this)
+    this.handleInput = this.handleInput.bind(this);
   }
 
   handleInput(event) {

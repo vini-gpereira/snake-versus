@@ -12,18 +12,18 @@ class Game {
       foods: {},
     };
 
-    this.createGame = this.createGame.bind(this)
-    this.startGame = this.startGame.bind(this)
-    this.playerCommand = this.playerCommand.bind(this)
-    this.addOrUpdatePlayer = this.addOrUpdatePlayer.bind(this)
-    this.removePlayer = this.removePlayer.bind(this)
-    this.addFood = this.addFood.bind(this)
-    this.removeFood = this.removeFood.bind(this)
-    this.addScore = this.addScore.bind(this)
-    this.removeScore = this.removeScore.bind(this)
-    this.incrementScore = this.incrementScore.bind(this)
-    this.checkForFoodCollision = this.checkForFoodCollision.bind(this)
-    this.randomFreePosition = this.randomFreePosition.bind(this)
+    this.createGame = this.createGame.bind(this);
+    this.startGame = this.startGame.bind(this);
+    this.playerCommand = this.playerCommand.bind(this);
+    this.addOrUpdatePlayer = this.addOrUpdatePlayer.bind(this);
+    this.removePlayer = this.removePlayer.bind(this);
+    this.addFood = this.addFood.bind(this);
+    this.removeFood = this.removeFood.bind(this);
+    this.addScore = this.addScore.bind(this);
+    this.removeScore = this.removeScore.bind(this);
+    this.incrementScore = this.incrementScore.bind(this);
+    this.checkForFoodCollision = this.checkForFoodCollision.bind(this);
+    this.randomFreePosition = this.randomFreePosition.bind(this);
   }
 
   createGame(playerIds) {
