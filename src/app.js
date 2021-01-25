@@ -4,6 +4,9 @@ import Actions from './resources/Actions.js';
 import Renderer from './resources/Renderer.js';
 import Game from './resources/Game.js';
 
+// eslint-disable-next-line no-undef
+const socket = io();
+
 const screen = document.getElementById('screen');
 const context = screen.getContext('2d');
 const pixel = 10;
@@ -37,11 +40,9 @@ document.addEventListener('keydown', listener.handleInput);
 
 watcher.subscribe(game.playerCommand);
 
-const players = ['player1', 'player2', 'player3', 'player4'];
-
-game.addFood({ foodId: 'food1', x: 10, y: 20 });
-game.addFood({ foodId: 'food2', x: 2, y: 30 });
-game.addFood({ foodId: 'food3', x: 40, y: 23 });
-game.addFood({ foodId: 'food4', x: 17, y: 28 });
-game.createGame(players);
 game.startGame();
+
+socket.on('connect', () => {
+  const playerId = socket.id;
+  console.log(`> Player connected on Client with id: ${playerId}`);
+});
