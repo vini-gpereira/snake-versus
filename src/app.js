@@ -1,8 +1,8 @@
-import Watcher from '../src/resources/Watcher';
-import Listener from '../src/resources/Listener';
-import Actions from '../src/resources/Actions';
-import Renderer from '../src/resources/Renderer';
-import Game from '../src/resources/Game';
+import Watcher from './resources/Watcher.js';
+import Listener from './resources/Listener.js';
+import Actions from './resources/Actions.js';
+import Renderer from './resources/Renderer.js';
+import Game from './resources/Game.js';
 
 const screen = document.getElementById('screen');
 const context = screen.getContext('2d');
@@ -23,7 +23,7 @@ const gameSettings = {
 const watcher = new Watcher();
 const listener = new Listener({ gameSettings, watcher });
 const actions = new Actions({ gameSettings });
-const renderer = new Renderer({ gameSettings, requestAnimationFrame });
+const renderer = new Renderer({ gameSettings });
 const game = new Game({
   gameSettings,
   actions,

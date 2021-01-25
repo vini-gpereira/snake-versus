@@ -1,5 +1,5 @@
-import randint from '../../utils/generators';
-import { isPositionFree } from '../../utils/validators';
+import randint from '../utils/generators.js';
+import { isPositionFree } from '../utils/validators.js';
 
 class Game {
   constructor({ gameSettings, actions, renderer }) {
