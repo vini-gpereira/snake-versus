@@ -1,21 +1,20 @@
-import { boundMethod } from "autobind-decorator";
-
 class Watcher {
   constructor() {
     this.observers = [];
+
+    this.subscribe = this.subscribe.bind(this)
+    this.unsubscribe = this.unsubscribe.bind(this)
+    this.notify = this.subscribe.bind(this)
   }
 
-  @boundMethod
   subscribe(f) {
     this.observers.push(f);
   }
 
-  @boundMethod
   unsubscribe(f) {
     this.observers = this.observers.filter((subscriber) => subscriber !== f);
   }
 
-  @boundMethod
   notify(command) {
     this.observers.forEach((subscriber) => subscriber(command));
   }

@@ -1,4 +1,3 @@
-import { boundMethod } from 'autobind-decorator';
 import randint from '../utils/generators.js';
 import { isPositionFree } from '../utils/validators.js';
 
@@ -12,9 +11,21 @@ class Game {
       players: {},
       foods: {},
     };
+
+    this.createGame = this.createGame.bind(this)
+    this.startGame = this.startGame.bind(this)
+    this.playerCommand = this.playerCommand.bind(this)
+    this.addOrUpdatePlayer = this.addOrUpdatePlayer.bind(this)
+    this.removePlayer = this.removePlayer.bind(this)
+    this.addFood = this.addFood.bind(this)
+    this.removeFood = this.removeFood.bind(this)
+    this.addScore = this.addScore.bind(this)
+    this.removeScore = this.removeScore.bind(this)
+    this.incrementScore = this.incrementScore.bind(this)
+    this.checkForFoodCollision = this.checkForFoodCollision.bind(this)
+    this.randomFreePosition = this.randomFreePosition.bind(this)
   }
 
-  @boundMethod
   createGame(playerIds) {
     playerIds.forEach((playerId) => {
       const position = this.randomFreePosition();
@@ -23,12 +34,10 @@ class Game {
     });
   }
 
-  @boundMethod
   startGame() {
     this.renderer.renderScreen(this.state.players, this.state.foods);
   }
 
-  @boundMethod
   playerCommand(command) {
     const { playerId, key } = command;
     const player = this.state.players[playerId];
@@ -40,7 +49,6 @@ class Game {
     }
   }
 
-  @boundMethod
   addScore(command) {
     const { playerId } = command;
 
@@ -49,13 +57,11 @@ class Game {
     }
   }
 
-  @boundMethod
   removeScore(command) {
     const { playerId } = command;
     delete this.state.scores[playerId];
   }
 
-  @boundMethod
   incrementScore(command) {
     const { playerId } = command;
 
@@ -64,32 +70,27 @@ class Game {
     }
   }
 
-  @boundMethod
   addOrUpdatePlayer(command) {
     const { playerId, x, y } = command;
     this.state.players[playerId] = { x, y };
   }
 
-  @boundMethod
   removePlayer(command) {
     const { playerId } = command;
     this.scores.removePlayerScore(playerId);
     delete this.state.players[playerId];
   }
 
-  @boundMethod
   addFood(command) {
     const { foodId, x, y } = command;
     this.state.foods[foodId] = { x, y };
   }
 
-  @boundMethod
   removeFood(command) {
     const { foodId } = command;
     delete this.state.players[foodId];
   }
 
-  @boundMethod
   checkForFoodCollision(playerId) {
     const { x, y } = this.state.players[playerId];
     const { foods } = this.state;
@@ -105,7 +106,6 @@ class Game {
     }
   }
 
-  @boundMethod
   randomFreePosition() {
     const min = 0;
     const max = this.boardSize - 1;

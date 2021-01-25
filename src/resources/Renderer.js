@@ -1,14 +1,14 @@
-import { boundMethod } from "autobind-decorator";
-
 class Renderer {
   constructor({ gameSettings }) {
     this.screen = gameSettings.screen;
     this.ctx = gameSettings.context;
     this.pixel = gameSettings.pixel;
     this.entitySize = gameSettings.entitySize;
+
+    this.renderScreen = this.renderScreen.bind(this)
+    this.clearScreen = this.clearScreen.bind(this)
   }
 
-  @boundMethod
   renderScreen(players, foods) {
     this.clearScreen();
 
@@ -39,7 +39,6 @@ class Renderer {
     });
   }
 
-  @boundMethod
   clearScreen() {
     this.ctx.clearRect(0, 0, this.screen.width, this.screen.height);
   }
