@@ -1,28 +1,21 @@
 class Renderer {
-  constructor({ gameSettings }) {
-    this.screen = gameSettings.screen;
-    this.ctx = gameSettings.context;
-    this.pixel = gameSettings.pixel;
-    this.entitySize = gameSettings.entitySize;
-    this.currentPlayerId = gameSettings.currentPlayerId;
-
-    this.renderScreen = this.renderScreen.bind(this);
-    this.clearScreen = this.clearScreen.bind(this);
+  constructor() {
+    this.pixel = 10;
+    this.entitySize = 10;
   }
 
-  renderScreen(players, foods) {
-    this.clearScreen();
+  renderScreen(screen, gameState, requestAnimationFrame, currentPlayerId) {
+    const context = screen.getContext('2d');
+    context.clearRect(0, 0, screen.width, screen.height);
+
+    const { players, foods } = gameState;
+
+    context.fillStyle = 'black';
 
     Object.keys(players).forEach((id) => {
       const player = players[id];
 
-      if (id === this.currentPlayerId) {
-        this.ctx.fillStyle = 'blue';
-      } else {
-        this.ctx.fillStyle = 'black';
-      }
-
-      this.ctx.fillRect(
+      context.fillRect(
         player.x * this.pixel,
         player.y * this.pixel,
         this.entitySize,
@@ -30,10 +23,10 @@ class Renderer {
       );
     });
 
-    this.ctx.fillStyle = 'red';
+    context.fillStyle = 'red';
 
     Object.values(foods).forEach((food) => {
-      this.ctx.fillRect(
+      context.fillRect(
         food.x * this.pixel,
         food.y * this.pixel,
         this.entitySize,
@@ -41,13 +34,26 @@ class Renderer {
       );
     });
 
-    window.requestAnimationFrame(() => {
-      this.renderScreen(players, foods);
-    });
-  }
+    const currentPlayer = players[currentPlayerId];
 
-  clearScreen() {
-    this.ctx.clearRect(0, 0, this.screen.width, this.screen.height);
+    if (currentPlayer) {
+      context.fillStyle = 'blue';
+      context.fillRect(
+        currentPlayer.x * this.pixel,
+        currentPlayer.y * this.pixel,
+        this.entitySize,
+        this.entitySize
+      );
+    }
+
+    requestAnimationFrame(() => {
+      this.renderScreen(
+        screen,
+        gameState,
+        requestAnimationFrame,
+        currentPlayerId
+      );
+    });
   }
 }
 

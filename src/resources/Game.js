@@ -1,32 +1,60 @@
 import randint from '../utils/generators.js';
 import { isPositionFree } from '../utils/validators.js';
+import { mod } from '../utils/operators.js';
 
 class Game {
-  constructor({ gameSettings, actions, renderer }) {
-    this.board = gameSettings.board;
-    this.actions = actions;
-    this.renderer = renderer;
+  constructor() {
+    this.actions = {
+      ArrowUp(player) {
+        const newY = mod(player.y - 1, 50);
+        return { ...player, y: newY };
+      },
+      ArrowDown(player) {
+        const newY = mod(player.y + 1, 50);
+        return { ...player, y: newY };
+      },
+      ArrowRight(player) {
+        const newX = mod(player.x + 1, 50);
+        return { ...player, x: newX };
+      },
+      ArrowLeft(player) {
+        const newX = mod(player.x - 1, 50);
+        return { ...player, x: newX };
+      },
+    };
+    this.board = {
+      height: 50,
+      width: 50,
+    };
     this.state = {
       scores: {},
       players: {},
       foods: {},
     };
+    this.observers = [];
 
-    this.startGame = this.startGame.bind(this);
     this.playerCommand = this.playerCommand.bind(this);
-    this.addOrUpdatePlayer = this.addOrUpdatePlayer.bind(this);
+    this.setState = this.setState.bind(this);
+    this.getState = this.getState.bind(this);
+    this.addPlayer = this.addPlayer.bind(this);
+    this.updatePlayer = this.updatePlayer.bind(this);
     this.removePlayer = this.removePlayer.bind(this);
     this.addFood = this.addFood.bind(this);
     this.removeFood = this.removeFood.bind(this);
     this.addScore = this.addScore.bind(this);
     this.removeScore = this.removeScore.bind(this);
     this.incrementScore = this.incrementScore.bind(this);
+    this.subscribe = this.subscribe.bind(this);
+    this.unsubscribe = this.unsubscribe.bind(this);
+    this.notify = this.notify.bind(this);
     this.checkForFoodCollision = this.checkForFoodCollision.bind(this);
     this.randomFreePosition = this.randomFreePosition.bind(this);
   }
 
-  startGame() {
-    this.renderer.renderScreen(this.state.players, this.state.foods);
+  start() {
+    const frequency = 3000;
+
+    setInterval(this.addFood, frequency);
   }
 
   playerCommand(command) {
@@ -34,10 +62,82 @@ class Game {
     const player = this.state.players[playerId];
 
     if (player) {
-      const { x, y } = this.actions.executeAction(player, key);
-      this.addOrUpdatePlayer({ playerId, x, y });
-      this.checkForFoodCollision(playerId);
+      const action = this.actions[key];
+
+      if (action) {
+        const { x, y } = action(player);
+        this.updatePlayer({ playerId, x, y });
+        this.checkForFoodCollision(playerId);
+      }
     }
+  }
+
+  setState(newState) {
+    Object.assign(this.state, newState);
+  }
+
+  getState() {
+    return this.state;
+  }
+
+  addPlayer(command) {
+    const { playerId } = command;
+    const { x, y } = this.randomFreePosition();
+    this.state.players[playerId] = { x, y };
+
+    this.notify({
+      type: 'add-player',
+      playerId,
+      x,
+      y,
+    });
+  }
+
+  updatePlayer(command) {
+    const { playerId, x, y } = command;
+    const player = this.state.players[playerId];
+    this.state.players[playerId] = { ...player, x, y };
+
+    this.notify({
+      type: 'update-player',
+      playerId,
+      x,
+      y,
+    });
+  }
+
+  removePlayer(command) {
+    const { playerId } = command;
+    this.removeScore(playerId);
+    delete this.state.players[playerId];
+
+    this.notify({
+      type: 'remove-player',
+      playerId,
+    });
+  }
+
+  addFood(command) {
+    const { foodId } = command;
+    const { x, y } = this.randomFreePosition();
+    this.state.foods[foodId] = { x, y };
+
+    this.notify({
+      type: 'add-food',
+      foodId,
+      x,
+      y,
+    });
+  }
+
+  removeFood(command) {
+    const { foodId } = command;
+    delete this.state.foods[foodId];
+
+    this.notify({
+      type: 'remove-food',
+      foodId,
+    });
   }
 
   addScore(command) {
@@ -61,25 +161,16 @@ class Game {
     }
   }
 
-  addOrUpdatePlayer(command) {
-    const { playerId, x, y } = command;
-    this.state.players[playerId] = { x, y };
+  subscribe(f) {
+    this.observers.push(f);
   }
 
-  removePlayer(command) {
-    const { playerId } = command;
-    this.scores.removePlayerScore(playerId);
-    delete this.state.players[playerId];
+  unsubscribe(f) {
+    this.observers = this.observers.filter((subscriber) => subscriber !== f);
   }
 
-  addFood(command) {
-    const { foodId, x, y } = command;
-    this.state.foods[foodId] = { x, y };
-  }
-
-  removeFood(command) {
-    const { foodId } = command;
-    delete this.state.foods[foodId];
+  notify(command) {
+    this.observers.forEach((subscriber) => subscriber(command));
   }
 
   checkForFoodCollision(playerId) {
